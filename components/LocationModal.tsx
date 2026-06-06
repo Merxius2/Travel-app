@@ -94,7 +94,7 @@ export function LocationModal({
         type="button"
         aria-label="Close modal"
         onClick={onClose}
-        className="absolute inset-0 bg-overlay backdrop-blur-sm"
+        className="absolute inset-0 bg-overlay"
       />
 
       <div className="glass-modal relative z-10 flex w-full max-w-lg animate-modal-in flex-col overflow-hidden rounded-t-[var(--radius-modal)] sm:max-h-[85vh] sm:rounded-[var(--radius-modal)]">
@@ -208,19 +208,19 @@ export function LocationModal({
             </div>
           </div>
 
-          <div className="shrink-0 border-t border-glass bg-glass-modal-footer px-5 py-4 backdrop-blur-xl sm:px-8">
+          <div className="shrink-0 border-t border-glass bg-glass-modal-footer px-5 py-4 sm:px-8">
             <div className="flex gap-3">
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 rounded-xl border border-glass bg-glass-subtle px-4 py-3 text-sm font-medium text-theme-muted transition-all hover:bg-glass"
+                className="btn-clay-secondary flex-1 rounded-xl border border-glass bg-glass-subtle px-4 py-3 text-sm font-medium text-theme-muted transition-all hover:bg-glass"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={!form.name.trim()}
-                className="flex-1 rounded-xl border border-glass-strong bg-glass-active px-4 py-3 text-sm font-semibold text-theme shadow-glass transition-all hover:scale-[1.02] hover:bg-glass disabled:cursor-not-allowed disabled:opacity-40"
+                className="btn-clay-primary flex-1 rounded-xl border border-glass-strong bg-glass-active px-4 py-3 text-sm font-semibold text-theme shadow-glass transition-all hover:scale-[1.02] hover:bg-glass disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {submitLabel}
               </button>

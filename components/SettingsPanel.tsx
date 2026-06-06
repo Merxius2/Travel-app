@@ -65,7 +65,7 @@ export function SettingsPanel({
         type="button"
         aria-label="Close settings"
         onClick={onClose}
-        className="absolute inset-0 bg-overlay backdrop-blur-sm"
+        className="absolute inset-0 bg-overlay"
       />
 
       <div className="glass-modal relative z-10 max-h-[92dvh] w-full max-w-md animate-modal-in overflow-y-auto p-6">

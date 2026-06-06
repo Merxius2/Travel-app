@@ -17,8 +17,7 @@ export function GlassCard({
   as = "div",
   style,
 }: GlassCardProps) {
-  const baseClass =
-    "glass-card backdrop-blur-2xl transition-all duration-300";
+  const baseClass = "glass-card transition-all duration-300";
 
   if (as === "button") {
     return (

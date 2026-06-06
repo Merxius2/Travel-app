@@ -20,7 +20,7 @@ export function ThemeFamilyPicker({ family, onChange }: ThemeFamilyPickerProps) 
             onClick={() => onChange(option.id)}
             className={`flex w-full items-center gap-3 rounded-[var(--radius-card)] border p-3 text-left transition-all ${
               isActive
-                ? "border-glass-strong bg-glass-active shadow-glass"
+                ? "theme-family-active border-glass-strong bg-glass-active shadow-glass"
                 : "border-glass bg-glass-subtle hover:border-glass-strong hover:bg-glass"
             }`}
           >

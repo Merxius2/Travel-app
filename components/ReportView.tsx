@@ -30,7 +30,7 @@ export function ReportView({
         <button
           type="button"
           onClick={onBack}
-          className="flex h-11 w-11 items-center justify-center rounded-xl border border-glass bg-glass backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:border-glass-strong hover:bg-glass-active active:scale-95"
+          className="flex h-11 w-11 items-center justify-center rounded-xl border border-glass bg-glass transition-all duration-300 hover:scale-105 hover:border-glass-strong hover:bg-glass-active active:scale-95"
         >
           <ArrowLeft className="h-5 w-5 text-theme-muted" />
         </button>

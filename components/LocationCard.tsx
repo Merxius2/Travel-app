@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
+import { useTheme } from "@/hooks/useTheme";
 import { getIconComponent } from "@/lib/icons";
 import type { Location } from "@/lib/types";
 import { SwipeReveal } from "./SwipeReveal";
@@ -20,11 +21,13 @@ interface Ripple {
 }
 
 export function LocationCard({ location, onCheckIn, onEdit, onDelete }: LocationCardProps) {
+  const { family } = useTheme();
   const [ripples, setRipples] = useState<Ripple[]>([]);
   const [isPressed, setIsPressed] = useState(false);
   const [isGlowing, setIsGlowing] = useState(false);
   const rippleId = useRef(0);
   const Icon = getIconComponent(location.icon);
+  const isClay = family === "vibrant-clay";
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -58,6 +61,14 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
     }
   };
 
+  const clayShadow = isGlowing
+    ? `0 8px 0 ${location.color}44, 0 16px 32px ${location.color}33, inset 0 3px 0 rgba(255,255,255,0.5), inset 0 -5px 10px ${location.color}22`
+    : `0 6px 0 ${location.color}33, 0 12px 28px ${location.color}22, inset 0 3px 0 rgba(255,255,255,0.55), inset 0 -5px 10px ${location.color}18`;
+
+  const glassShadow = isGlowing
+    ? `0 0 40px ${location.color}55, inset 0 1px 1px rgba(255,255,255,0.25)`
+    : `inset 0 1px 1px rgba(255,255,255,0.2), 0 8px 32px rgba(0,0,0,0.12)`;
+
   return (
     <SwipeReveal
       className="rounded-[var(--radius-card)]"
@@ -82,14 +93,15 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
       <button
         type="button"
         onClick={handleClick}
-        className={`group relative block min-h-[148px] w-full rounded-[var(--radius-card)] p-6 text-left backdrop-blur-2xl transition-all duration-300 ${
+        className={`location-card-btn group relative block min-h-[148px] w-full rounded-[var(--radius-card)] p-6 text-left transition-all duration-300 ${
           isPressed ? "scale-[0.96]" : "hover:scale-[1.02] active:scale-[0.96]"
         }`}
         style={{
-          backgroundColor: `${location.color}18`,
-          boxShadow: isGlowing
-            ? `inset 0 0 0 1px ${location.color}55, 0 0 40px ${location.color}55, inset 0 1px 1px rgba(255,255,255,0.25)`
-            : `inset 0 0 0 1px ${location.color}55, inset 0 1px 1px rgba(255,255,255,0.2), 0 8px 32px rgba(0,0,0,0.12)`,
+          backgroundColor: isClay
+            ? `color-mix(in srgb, ${location.color} var(--location-tint-mix), var(--location-tint-base))`
+            : `${location.color}18`,
+          boxShadow: isClay ? clayShadow : glassShadow,
+          border: isClay ? "none" : `1px solid ${location.color}55`,
         }}
       >
         {ripples.map((ripple) => (
@@ -107,17 +119,31 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
         <div className="relative z-10 flex h-full flex-col justify-between gap-4">
           <div
             className="flex h-12 w-12 items-center justify-center rounded-xl border transition-all duration-300 group-hover:scale-110"
-            style={{
-              borderColor: `${location.color}66`,
-              backgroundColor: `${location.color}30`,
-              boxShadow: `0 0 20px ${location.color}40`,
-            }}
+            style={
+              isClay
+                ? {
+                    backgroundColor: location.color,
+                    border: "none",
+                    boxShadow: `0 4px 0 ${location.color}99, inset 0 2px 0 rgba(255,255,255,0.35)`,
+                  }
+                : {
+                    borderColor: `${location.color}66`,
+                    backgroundColor: `${location.color}30`,
+                    boxShadow: `0 0 20px ${location.color}40`,
+                  }
+            }
           >
-            <Icon className="h-6 w-6" style={{ color: location.color }} />
+            <Icon
+              className="h-6 w-6"
+              style={{ color: isClay ? "#ffffff" : location.color }}
+            />
           </div>
 
           <div>
-            <h3 className="font-semibold" style={{ color: location.color }}>
+            <h3
+              className="font-bold"
+              style={{ color: isClay ? location.color : location.color }}
+            >
               {location.name}
             </h3>
             {location.description ? (

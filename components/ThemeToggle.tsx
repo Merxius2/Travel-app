@@ -27,7 +27,7 @@ export function ThemeToggle({ preference, onChange }: ThemeToggleProps) {
             onClick={() => onChange(value)}
             className={`flex flex-col items-center gap-1.5 rounded-[var(--radius-control)] border px-2 py-3 text-xs font-medium transition-all ${
               isActive
-                ? "border-glass-strong bg-glass-active text-theme shadow-glass"
+                ? "theme-toggle-active border-glass-strong bg-glass-active text-theme shadow-glass"
                 : "border-glass bg-glass-subtle text-theme-muted hover:border-glass-strong hover:bg-glass"
             }`}
           >
