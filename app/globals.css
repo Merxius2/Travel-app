@@ -298,13 +298,20 @@ html {
   padding: 0;
   min-height: 100dvh;
   min-height: 100vh;
-  background-color: var(--bg-gradient-1);
+  min-height: -webkit-fill-available;
 }
 
 html,
 body {
   min-height: 100dvh;
   min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+html.theme-bg {
+  background-color: var(--bg-gradient-1);
+  position: relative;
+  isolation: isolate;
 }
 
 body {
@@ -313,7 +320,18 @@ body {
   background: transparent;
 }
 
-.theme-bg {
+/* Full-viewport background layer — stretches edge to edge */
+html.theme-bg::before {
+  content: "";
+  position: fixed;
+  top: calc(0px - env(safe-area-inset-top, 0px));
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: calc(100dvh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px));
+  min-height: calc(100dvh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px));
+  z-index: -2;
+  pointer-events: none;
   background: linear-gradient(
     -45deg,
     var(--bg-gradient-1),
@@ -323,51 +341,49 @@ body {
     var(--bg-gradient-5),
     var(--bg-gradient-6)
   );
-  background-color: var(--bg-gradient-1);
   background-size: 400% 400%;
-  background-attachment: fixed;
+  background-repeat: no-repeat;
   animation: gradient-shift 18s ease infinite;
 }
 
-.theme-bg::before {
+/* Liquid Glass glow overlays */
+html.theme-bg::after {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  min-height: 100dvh;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
   background:
     radial-gradient(ellipse 80% 60% at 20% 30%, var(--bg-glow-1), transparent 50%),
     radial-gradient(ellipse 70% 50% at 80% 70%, var(--bg-glow-2), transparent 50%),
-    radial-gradient(ellipse 60% 40% at 50% 90%, var(--bg-glow-3), transparent 50%);
+    radial-gradient(ellipse 60% 40% at 50% 90%, var(--bg-glow-3), transparent 50%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: 1;
   pointer-events: none;
-  z-index: 0;
-}
-
-.theme-bg::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  opacity: var(--bg-noise-opacity);
-  pointer-events: none;
-  z-index: 0;
+  z-index: -1;
 }
 
 /* ─── Vibrant Clay overrides ─── */
-[data-theme-family="vibrant-clay"] .theme-bg {
+[data-theme-family="vibrant-clay"] html.theme-bg::before {
   animation: none;
   background: linear-gradient(
-    155deg,
+    180deg,
     var(--bg-gradient-1) 0%,
-    var(--bg-gradient-2) 22%,
-    var(--bg-gradient-3) 48%,
-    var(--bg-gradient-4) 72%,
-    var(--bg-gradient-5) 88%,
+    var(--bg-gradient-2) 18%,
+    var(--bg-gradient-3) 40%,
+    var(--bg-gradient-4) 62%,
+    var(--bg-gradient-5) 82%,
     var(--bg-gradient-6) 100%
   );
   background-size: 100% 100%;
 }
 
-[data-theme-family="vibrant-clay"] .theme-bg::before,
-[data-theme-family="vibrant-clay"] .theme-bg::after {
+[data-theme-family="vibrant-clay"] html.theme-bg::after {
   display: none;
 }
 
