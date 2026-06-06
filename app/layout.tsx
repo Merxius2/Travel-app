@@ -40,6 +40,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-dvh antialiased`}
       >
+        <div className="theme-backdrop" aria-hidden="true" />
+        <div className="theme-backdrop-glow" aria-hidden="true" />
         <AppProviders>
           <div className="relative z-10 mx-auto min-h-screen max-w-6xl px-4 pb-8 pt-[max(2rem,env(safe-area-inset-top,0px))] sm:px-6 sm:pb-12 sm:pt-[max(3rem,env(safe-area-inset-top,0px))] lg:px-8">
             {children}

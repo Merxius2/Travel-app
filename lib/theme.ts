@@ -92,8 +92,11 @@ export function resolveColorMode(preference: ColorPreference): ResolvedColorMode
 
 function syncThemeColorMeta(): void {
   const root = document.documentElement;
+  const styles = getComputedStyle(root);
   const color =
-    getComputedStyle(root).getPropertyValue("--bg-gradient-1").trim() || "#0f0c29";
+    styles.getPropertyValue("--theme-chrome-color").trim() ||
+    styles.getPropertyValue("--bg-gradient-1").trim() ||
+    "#0f0c29";
 
   let meta = document.querySelector('meta[name="theme-color"]');
   if (!meta) {
@@ -148,7 +151,10 @@ export const themeInitScript = `
       meta.setAttribute("name", "theme-color");
       document.head.appendChild(meta);
     }
-    var topColor = getComputedStyle(document.documentElement).getPropertyValue("--bg-gradient-1").trim();
+    var styles = getComputedStyle(document.documentElement);
+    var topColor =
+      styles.getPropertyValue("--theme-chrome-color").trim() ||
+      styles.getPropertyValue("--bg-gradient-1").trim();
     if (topColor) meta.setAttribute("content", topColor);
   } catch (e) {}
 })();
