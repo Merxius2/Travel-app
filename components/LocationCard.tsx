@@ -82,15 +82,14 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
       <button
         type="button"
         onClick={handleClick}
-        className={`group relative block min-h-[148px] w-full border p-6 text-left backdrop-blur-2xl transition-all duration-300 ${
+        className={`group relative block min-h-[148px] w-full rounded-2xl p-6 text-left backdrop-blur-2xl transition-all duration-300 ${
           isPressed ? "scale-[0.96]" : "hover:scale-[1.02] active:scale-[0.96]"
         }`}
         style={{
-          borderColor: `${location.color}55`,
           backgroundColor: `${location.color}18`,
           boxShadow: isGlowing
-            ? `0 0 40px ${location.color}55, inset 0 1px 1px rgba(255,255,255,0.25)`
-            : `inset 0 1px 1px rgba(255,255,255,0.2), 0 8px 32px rgba(0,0,0,0.12)`,
+            ? `inset 0 0 0 1px ${location.color}55, 0 0 40px ${location.color}55, inset 0 1px 1px rgba(255,255,255,0.25)`
+            : `inset 0 0 0 1px ${location.color}55, inset 0 1px 1px rgba(255,255,255,0.2), 0 8px 32px rgba(0,0,0,0.12)`,
         }}
       >
         {ripples.map((ripple) => (
