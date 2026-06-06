@@ -34,7 +34,7 @@ export default function RootLayout({
     <html lang="en" className="theme-bg h-full" suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#0f0c29" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body

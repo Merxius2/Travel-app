@@ -108,6 +108,17 @@ function syncThemeColorMeta(): void {
   meta.setAttribute("content", color);
 }
 
+function syncStatusBarStyle(mode: ResolvedColorMode): void {
+  let meta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+  if (!meta) {
+    meta = document.createElement("meta");
+    meta.setAttribute("name", "apple-mobile-web-app-status-bar-style");
+    document.head.appendChild(meta);
+  }
+
+  meta.setAttribute("content", mode === "dark" ? "black-translucent" : "default");
+}
+
 export function applyThemeSettings(settings: ThemeSettings): ResolvedColorMode {
   const mode = resolveColorMode(settings.colorPreference);
 
@@ -117,6 +128,7 @@ export function applyThemeSettings(settings: ThemeSettings): ResolvedColorMode {
     document.documentElement.setAttribute("data-color-preference", settings.colorPreference);
     document.documentElement.style.colorScheme = mode;
     syncThemeColorMeta();
+    syncStatusBarStyle(mode);
   }
 
   return mode;
@@ -156,6 +168,13 @@ export const themeInitScript = `
       styles.getPropertyValue("--theme-chrome-color").trim() ||
       styles.getPropertyValue("--bg-gradient-1").trim();
     if (topColor) meta.setAttribute("content", topColor);
+    var statusBar = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+    if (!statusBar) {
+      statusBar = document.createElement("meta");
+      statusBar.setAttribute("name", "apple-mobile-web-app-status-bar-style");
+      document.head.appendChild(statusBar);
+    }
+    statusBar.setAttribute("content", mode === "dark" ? "black-translucent" : "default");
   } catch (e) {}
 })();
 `;
