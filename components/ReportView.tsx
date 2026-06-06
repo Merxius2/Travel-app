@@ -5,14 +5,21 @@ import { getIconComponent } from "@/lib/icons";
 import { getLocationStats, groupCheckInsByDay } from "@/lib/report-utils";
 import type { CheckIn, Location } from "@/lib/types";
 import { GlassCard } from "./GlassCard";
+import { ReportCheckInRow } from "./ReportCheckInRow";
 
 interface ReportViewProps {
   locations: Location[];
   checkIns: CheckIn[];
   onBack: () => void;
+  onDeleteCheckIn: (checkInId: string) => void;
 }
 
-export function ReportView({ locations, checkIns, onBack }: ReportViewProps) {
+export function ReportView({
+  locations,
+  checkIns,
+  onBack,
+  onDeleteCheckIn,
+}: ReportViewProps) {
   const dayGroups = groupCheckInsByDay(checkIns, locations);
   const stats = getLocationStats(checkIns, locations);
   const totalVisits = checkIns.length;
@@ -90,44 +97,21 @@ export function ReportView({ locations, checkIns, onBack }: ReportViewProps) {
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white/50">
               Timeline
             </h3>
+            <p className="mb-3 text-xs text-white/40">Swipe left on an entry to remove it</p>
             <div className="space-y-6">
               {dayGroups.map((group) => (
                 <div key={group.dateKey}>
                   <h4 className="mb-3 text-lg font-semibold text-white">{group.label}</h4>
-                  <GlassCard className="divide-y divide-white/10 overflow-hidden">
-                    {group.entries.map(({ checkIn, location, timeLabel }) => {
-                      const Icon = getIconComponent(location.icon);
-                      return (
-                        <div
-                          key={checkIn.id}
-                          className="flex items-center gap-4 p-4 transition-colors hover:bg-white/5"
-                        >
-                          <div
-                            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border"
-                            style={{
-                              borderColor: `${location.color}55`,
-                              backgroundColor: `${location.color}20`,
-                            }}
-                          >
-                            <Icon className="h-5 w-5" style={{ color: location.color }} />
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <p className="font-medium text-white">{location.name}</p>
-                            {location.description && (
-                              <p className="truncate text-sm text-white/45">
-                                {location.description}
-                              </p>
-                            )}
-                          </div>
-                          <time
-                            dateTime={checkIn.timestamp}
-                            className="shrink-0 text-sm font-medium tabular-nums text-white/70"
-                          >
-                            {timeLabel}
-                          </time>
-                        </div>
-                      );
-                    })}
+                  <GlassCard className="divide-y divide-white/10 overflow-hidden p-0">
+                    {group.entries.map(({ checkIn, location, timeLabel }) => (
+                      <ReportCheckInRow
+                        key={checkIn.id}
+                        checkIn={checkIn}
+                        location={location}
+                        timeLabel={timeLabel}
+                        onDelete={onDeleteCheckIn}
+                      />
+                    ))}
                   </GlassCard>
                 </div>
               ))}

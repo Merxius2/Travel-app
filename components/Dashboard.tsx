@@ -1,18 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import { Settings } from "lucide-react";
 import { useLocationStore } from "@/hooks/useLocationStore";
+import type { Location, LocationFormData } from "@/lib/types";
 import { AddLocationCard } from "./AddLocationCard";
-import { AddLocationModal } from "./AddLocationModal";
 import { CreateReportCard } from "./CreateReportCard";
+import { GlassCard } from "./GlassCard";
 import { Header } from "./Header";
 import { LocationCard } from "./LocationCard";
+import { LocationModal } from "./LocationModal";
 import { ReportView } from "./ReportView";
 import { SettingsPanel } from "./SettingsPanel";
-import { GlassCard } from "./GlassCard";
-import { Settings } from "lucide-react";
 
 type View = "dashboard" | "report";
+type ModalMode = "add" | "edit";
 
 export function Dashboard() {
   const {
@@ -20,14 +22,39 @@ export function Dashboard() {
     checkIns,
     hydrated,
     addLocation,
+    updateLocation,
+    deleteLocation,
     registerCheckIn,
+    deleteCheckIn,
     clearAllData,
     exportData,
   } = useLocationStore();
 
   const [view, setView] = useState<View>("dashboard");
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<ModalMode>("add");
+  const [editingLocation, setEditingLocation] = useState<Location | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  const openAddModal = () => {
+    setModalMode("add");
+    setEditingLocation(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (location: Location) => {
+    setModalMode("edit");
+    setEditingLocation(location);
+    setIsModalOpen(true);
+  };
+
+  const handleModalSave = (form: LocationFormData) => {
+    if (modalMode === "edit" && editingLocation) {
+      updateLocation(editingLocation.id, form);
+    } else {
+      addLocation(form);
+    }
+  };
 
   if (!hydrated) {
     return (
@@ -43,6 +70,7 @@ export function Dashboard() {
         locations={locations}
         checkIns={checkIns}
         onBack={() => setView("dashboard")}
+        onDeleteCheckIn={deleteCheckIn}
       />
     );
   }
@@ -55,7 +83,7 @@ export function Dashboard() {
         <div className="mb-6">
           <h2 className="text-lg font-semibold text-white">Your Locations</h2>
           <p className="text-sm text-white/50">
-            Tap a location to register a check-in instantly
+            Tap to check in · swipe left to edit or remove
           </p>
         </div>
 
@@ -65,10 +93,12 @@ export function Dashboard() {
               key={location.id}
               location={location}
               onCheckIn={registerCheckIn}
+              onEdit={openEditModal}
+              onDelete={deleteLocation}
             />
           ))}
 
-          <AddLocationCard onClick={() => setIsAddModalOpen(true)} />
+          <AddLocationCard onClick={openAddModal} />
           <CreateReportCard
             onClick={() => setView("report")}
             checkInCount={checkIns.length}
@@ -86,10 +116,12 @@ export function Dashboard() {
         </div>
       </main>
 
-      <AddLocationModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onSave={addLocation}
+      <LocationModal
+        isOpen={isModalOpen}
+        mode={modalMode}
+        initialLocation={editingLocation}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleModalSave}
       />
 
       <SettingsPanel

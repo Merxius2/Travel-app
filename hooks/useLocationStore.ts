@@ -42,6 +42,30 @@ export function useLocationStore() {
     return location;
   }, []);
 
+  const updateLocation = useCallback((id: string, form: LocationFormData) => {
+    setState((prev) => ({
+      ...prev,
+      locations: prev.locations.map((location) =>
+        location.id === id
+          ? {
+              ...location,
+              name: form.name.trim(),
+              description: form.description.trim(),
+              color: form.color,
+              icon: form.icon,
+            }
+          : location
+      ),
+    }));
+  }, []);
+
+  const deleteLocation = useCallback((id: string) => {
+    setState((prev) => ({
+      locations: prev.locations.filter((location) => location.id !== id),
+      checkIns: prev.checkIns.filter((checkIn) => checkIn.locationId !== id),
+    }));
+  }, []);
+
   const registerCheckIn = useCallback((locationId: string) => {
     const checkIn = {
       id: createId(),
@@ -55,6 +79,13 @@ export function useLocationStore() {
     }));
 
     return checkIn;
+  }, []);
+
+  const deleteCheckIn = useCallback((checkInId: string) => {
+    setState((prev) => ({
+      ...prev,
+      checkIns: prev.checkIns.filter((checkIn) => checkIn.id !== checkInId),
+    }));
   }, []);
 
   const clearAllData = useCallback(() => {
@@ -78,7 +109,10 @@ export function useLocationStore() {
     ...state,
     hydrated,
     addLocation,
+    updateLocation,
+    deleteLocation,
     registerCheckIn,
+    deleteCheckIn,
     clearAllData,
     exportData,
   };
