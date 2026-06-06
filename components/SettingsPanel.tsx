@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import { Cloud, Download, Trash2, X } from "lucide-react";
+import { Cloud, Download, Palette, Trash2, X } from "lucide-react";
+import { useTheme } from "@/hooks/useTheme";
 import { GlassCard } from "./GlassCard";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface SettingsPanelProps {
   isOpen: boolean;
@@ -21,6 +23,8 @@ export function SettingsPanel({
   locationCount,
   checkInCount,
 }: SettingsPanelProps) {
+  const { preference, setPreference } = useTheme();
+
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -60,27 +64,40 @@ export function SettingsPanel({
         type="button"
         aria-label="Close settings"
         onClick={onClose}
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-overlay backdrop-blur-sm"
       />
 
-      <div className="relative z-10 w-full max-w-md animate-modal-in rounded-3xl border border-white/25 bg-white/10 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.3)] backdrop-blur-2xl">
+      <div className="glass-modal relative z-10 max-h-[92dvh] w-full max-w-md animate-modal-in overflow-y-auto rounded-3xl p-6">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-white">Settings</h2>
-            <p className="mt-1 text-sm text-white/60">
+            <h2 className="text-xl font-semibold text-theme">Settings</h2>
+            <p className="mt-1 text-sm text-theme-muted">
               {locationCount} locations · {checkInCount} check-ins
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/20 bg-white/10 transition-all hover:bg-white/20"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-glass bg-glass-subtle transition-all hover:bg-glass"
           >
-            <X className="h-4 w-4 text-white/80" />
+            <X className="h-4 w-4 text-theme-muted" />
           </button>
         </div>
 
         <div className="space-y-3">
+          <GlassCard className="p-4">
+            <div className="mb-3 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-glass bg-glass-active">
+                <Palette className="h-5 w-5 text-theme-muted" />
+              </div>
+              <div>
+                <p className="font-medium text-theme">Appearance</p>
+                <p className="text-sm text-theme-muted">Theme preference</p>
+              </div>
+            </div>
+            <ThemeToggle preference={preference} onChange={setPreference} />
+          </GlassCard>
+
           <GlassCard className="p-4">
             <button
               type="button"
@@ -88,11 +105,11 @@ export function SettingsPanel({
               className="flex w-full items-center gap-3 text-left transition-opacity hover:opacity-80"
             >
               <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-emerald-300/30 bg-emerald-500/20">
-                <Download className="h-5 w-5 text-emerald-200" />
+                <Download className="h-5 w-5 text-emerald-500" />
               </div>
               <div>
-                <p className="font-medium text-white">Data Export</p>
-                <p className="text-sm text-white/50">Download your data as JSON</p>
+                <p className="font-medium text-theme">Data Export</p>
+                <p className="text-sm text-theme-muted">Download your data as JSON</p>
               </div>
             </button>
           </GlassCard>
@@ -100,11 +117,11 @@ export function SettingsPanel({
           <GlassCard className="p-4 opacity-60">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-blue-300/30 bg-blue-500/20">
-                <Cloud className="h-5 w-5 text-blue-200" />
+                <Cloud className="h-5 w-5 text-blue-500" />
               </div>
               <div>
-                <p className="font-medium text-white">Account Sync</p>
-                <p className="text-sm text-white/50">Coming soon — cloud backup</p>
+                <p className="font-medium text-theme">Account Sync</p>
+                <p className="text-sm text-theme-muted">Coming soon — cloud backup</p>
               </div>
             </div>
           </GlassCard>
@@ -116,11 +133,11 @@ export function SettingsPanel({
               className="flex w-full items-center gap-3 text-left transition-opacity hover:opacity-80"
             >
               <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-rose-300/30 bg-rose-500/20">
-                <Trash2 className="h-5 w-5 text-rose-200" />
+                <Trash2 className="h-5 w-5 text-rose-500" />
               </div>
               <div>
-                <p className="font-medium text-white">Clear All Data</p>
-                <p className="text-sm text-white/50">Remove all locations and visits</p>
+                <p className="font-medium text-theme">Clear All Data</p>
+                <p className="text-sm text-theme-muted">Remove all locations and visits</p>
               </div>
             </button>
           </GlassCard>

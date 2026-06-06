@@ -13,15 +13,15 @@ export function CreateReportCard({ onClick, checkInCount }: CreateReportCardProp
     <GlassCard
       as="button"
       onClick={onClick}
-      className="group min-h-[148px] w-full p-6 text-left transition-all duration-300 hover:scale-[1.02] hover:border-white/35 hover:bg-white/15 hover:shadow-[0_0_40px_rgba(139,92,246,0.2)] active:scale-[0.98]"
+      className="group min-h-[148px] w-full p-6 text-left transition-all duration-300 hover:scale-[1.02] hover:border-glass-strong hover:bg-glass-active hover:shadow-[0_0_40px_rgba(139,92,246,0.2)] active:scale-[0.98]"
     >
       <div className="flex h-full flex-col justify-between gap-4">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-violet-300/30 bg-violet-500/20 shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all duration-300 group-hover:shadow-[0_0_28px_rgba(139,92,246,0.45)]">
-          <BarChart3 className="h-6 w-6 text-violet-200" />
+          <BarChart3 className="h-6 w-6 text-violet-400" />
         </div>
         <div>
-          <h3 className="font-semibold text-white">Create Report</h3>
-          <p className="mt-1 text-sm text-white/60">
+          <h3 className="font-semibold text-theme">Create Report</h3>
+          <p className="mt-1 text-sm text-theme-muted">
             {checkInCount > 0
               ? `${checkInCount} visit${checkInCount === 1 ? "" : "s"} tracked`
               : "View your visit history"}

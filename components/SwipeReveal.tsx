@@ -32,6 +32,7 @@ export function SwipeReveal({ children, actions, className = "", onOpenChange }:
 
   const maxOffset = actions.length * ACTION_WIDTH;
   const openThreshold = maxOffset * 0.35;
+  const isOpen = offset !== 0;
 
   const snap = useCallback(
     (value: number) => {
@@ -52,7 +53,8 @@ export function SwipeReveal({ children, actions, className = "", onOpenChange }:
 
   useEffect(() => {
     const handlePointerDown = (event: PointerEvent) => {
-      if (!containerRef.current?.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (!containerRef.current?.contains(target)) {
         close();
       }
     };
@@ -110,22 +112,24 @@ export function SwipeReveal({ children, actions, className = "", onOpenChange }:
   };
 
   return (
-    <div ref={containerRef} className={`relative overflow-hidden rounded-2xl ${className}`}>
+    <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
       <div
-        className="absolute inset-y-0 right-0 flex"
+        className={`absolute inset-y-0 right-0 flex ${isOpen ? "z-20" : "z-0"}`}
         style={{ width: maxOffset }}
-        aria-hidden={offset === 0}
+        aria-hidden={!isOpen}
       >
         {actions.map((action) => (
           <button
             key={action.id}
             type="button"
-            onClick={() => {
+            onPointerDown={(event) => event.stopPropagation()}
+            onClick={(event) => {
+              event.stopPropagation();
               action.onClick();
               close();
             }}
             className={`flex w-[72px] flex-col items-center justify-center gap-1 text-xs font-medium transition-opacity ${
-              action.className ?? "bg-white/10 text-white"
+              action.className ?? "bg-glass text-theme"
             }`}
           >
             {action.icon}
@@ -135,7 +139,7 @@ export function SwipeReveal({ children, actions, className = "", onOpenChange }:
       </div>
 
       <div
-        className={`relative touch-pan-y select-none ${
+        className={`relative z-10 touch-pan-y select-none bg-glass-row ${
           isAnimating ? "transition-transform duration-300 ease-out" : ""
         }`}
         style={{ transform: `translateX(${offset}px)` }}

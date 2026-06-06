@@ -59,7 +59,13 @@ export function Dashboard() {
   if (!hydrated) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-white/80" />
+        <div
+          className="h-8 w-8 animate-spin rounded-full border-2"
+          style={{
+            borderColor: "var(--spinner-track)",
+            borderTopColor: "var(--spinner-head)",
+          }}
+        />
       </div>
     );
   }
@@ -81,8 +87,8 @@ export function Dashboard() {
 
       <main className="mt-10">
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-white">Your Locations</h2>
-          <p className="text-sm text-white/50">
+          <h2 className="text-lg font-semibold text-theme">Your Locations</h2>
+          <p className="text-sm text-theme-muted">
             Tap to check in · swipe left to edit or remove
           </p>
         </div>
@@ -106,11 +112,11 @@ export function Dashboard() {
 
           {locations.length === 0 && (
             <GlassCard className="flex min-h-[148px] flex-col items-center justify-center gap-2 p-6 text-center opacity-70">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 bg-white/10">
-                <Settings className="h-5 w-5 text-white/60" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-glass bg-glass">
+                <Settings className="h-5 w-5 text-theme-muted" />
               </div>
-              <p className="text-sm font-medium text-white/70">Settings</p>
-              <p className="text-xs text-white/40">Tap the gear icon above</p>
+              <p className="text-sm font-medium text-theme">Settings</p>
+              <p className="text-xs text-theme-subtle">Tap the gear icon above</p>
             </GlassCard>
           )}
         </div>

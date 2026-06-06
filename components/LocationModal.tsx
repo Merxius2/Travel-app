@@ -94,30 +94,30 @@ export function LocationModal({
         type="button"
         aria-label="Close modal"
         onClick={onClose}
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-overlay backdrop-blur-sm"
       />
 
-      <div className="relative z-10 flex max-h-[92dvh] w-full max-w-lg animate-modal-in flex-col overflow-hidden rounded-t-3xl border border-white/25 bg-white/10 shadow-[0_24px_80px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.3)] backdrop-blur-2xl sm:max-h-[85vh] sm:rounded-3xl">
-        <div className="shrink-0 border-b border-white/10 px-5 pb-4 pt-5 sm:px-8 sm:pt-8">
+      <div className="glass-modal relative z-10 flex w-full max-w-lg animate-modal-in flex-col overflow-hidden rounded-t-3xl sm:max-h-[85vh] sm:rounded-3xl">
+        <div className="shrink-0 border-b border-glass px-5 pb-4 pt-5 sm:px-8 sm:pt-6">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <h2 className="text-xl font-semibold text-white">{title}</h2>
-              <p className="mt-1 text-sm text-white/60">{subtitle}</p>
+              <h2 className="text-xl font-semibold text-theme">{title}</h2>
+              <p className="mt-1 text-sm text-theme-muted">{subtitle}</p>
             </div>
             <button
               type="button"
               onClick={onClose}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/20 bg-white/10 transition-all hover:bg-white/20"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-glass bg-glass-subtle transition-all hover:bg-glass"
             >
-              <X className="h-4 w-4 text-white/80" />
+              <X className="h-4 w-4 text-theme-muted" />
             </button>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
-          <div className="flex-1 space-y-5 overflow-y-auto overscroll-contain px-5 py-5 sm:px-8">
+        <form onSubmit={handleSubmit} className="flex flex-col">
+          <div className="max-h-[min(58dvh,calc(85vh-9.5rem))] space-y-5 overflow-y-auto overscroll-contain px-5 py-5 sm:max-h-[calc(85vh-10rem)] sm:px-8">
             <div>
-              <label htmlFor="location-name" className="mb-2 block text-sm font-medium text-white/80">
+              <label htmlFor="location-name" className="mb-2 block text-sm font-medium text-theme">
                 Name
               </label>
               <input
@@ -127,14 +127,14 @@ export function LocationModal({
                 value={form.name}
                 onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
                 placeholder="e.g. Work, Gym, Coffee Shop"
-                className="w-full rounded-xl border border-white/20 bg-black/20 px-4 py-3 text-white placeholder:text-white/35 outline-none transition-all focus:border-white/40 focus:shadow-[0_0_20px_rgba(255,255,255,0.08)]"
+                className="glass-input w-full rounded-xl px-4 py-3 outline-none transition-all focus:border-glass-strong focus:shadow-glass"
               />
             </div>
 
             <div>
               <label
                 htmlFor="location-description"
-                className="mb-2 block text-sm font-medium text-white/80"
+                className="mb-2 block text-sm font-medium text-theme"
               >
                 Description
               </label>
@@ -146,12 +146,12 @@ export function LocationModal({
                   setForm((prev) => ({ ...prev, description: event.target.value }))
                 }
                 placeholder="Optional notes about this location"
-                className="w-full resize-none rounded-xl border border-white/20 bg-black/20 px-4 py-3 text-white placeholder:text-white/35 outline-none transition-all focus:border-white/40 focus:shadow-[0_0_20px_rgba(255,255,255,0.08)]"
+                className="glass-input w-full resize-none rounded-xl px-4 py-3 outline-none transition-all focus:border-glass-strong focus:shadow-glass"
               />
             </div>
 
             <div>
-              <span className="mb-3 block text-sm font-medium text-white/80">Custom Color</span>
+              <span className="mb-3 block text-sm font-medium text-theme">Custom Color</span>
               <div className="grid grid-cols-4 gap-3 sm:grid-cols-8">
                 {COLOR_PRESETS.map((preset) => (
                   <button
@@ -161,8 +161,8 @@ export function LocationModal({
                     onClick={() => setForm((prev) => ({ ...prev, color: preset.value }))}
                     className={`aspect-square rounded-xl border-2 transition-all duration-300 hover:scale-110 ${
                       form.color === preset.value
-                        ? "scale-110 border-white shadow-[0_0_24px_var(--glow)]"
-                        : "border-white/20 hover:border-white/50"
+                        ? "scale-110 border-glass-strong shadow-[0_0_24px_var(--glow)]"
+                        : "border-glass hover:border-glass-strong"
                     }`}
                     style={
                       {
@@ -176,7 +176,7 @@ export function LocationModal({
             </div>
 
             <div>
-              <span className="mb-3 block text-sm font-medium text-white/80">Icon</span>
+              <span className="mb-3 block text-sm font-medium text-theme">Icon</span>
               <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">
                 {ICON_OPTIONS.map((option) => {
                   const Icon = option.icon;
@@ -192,15 +192,15 @@ export function LocationModal({
                       }
                       className={`flex flex-col items-center gap-1 rounded-xl border p-2.5 transition-all duration-300 hover:scale-105 sm:p-3 ${
                         isSelected
-                          ? "border-white/50 bg-white/20 shadow-[0_0_20px_rgba(255,255,255,0.15)]"
-                          : "border-white/15 bg-white/5 hover:border-white/30 hover:bg-white/10"
+                          ? "border-glass-strong bg-glass-active shadow-glass"
+                          : "border-glass bg-glass-subtle hover:border-glass-strong hover:bg-glass"
                       }`}
                     >
                       <Icon
                         className="h-5 w-5"
-                        style={{ color: isSelected ? form.color : "rgba(255,255,255,0.7)" }}
+                        style={{ color: isSelected ? form.color : "var(--theme-text-muted)" }}
                       />
-                      <span className="text-[10px] text-white/50">{option.label}</span>
+                      <span className="text-[10px] text-theme-subtle">{option.label}</span>
                     </button>
                   );
                 })}
@@ -208,19 +208,19 @@ export function LocationModal({
             </div>
           </div>
 
-          <div className="shrink-0 border-t border-white/10 bg-black/20 px-5 py-4 backdrop-blur-xl sm:px-8">
+          <div className="shrink-0 border-t border-glass bg-glass-modal-footer px-5 py-4 backdrop-blur-xl sm:px-8">
             <div className="flex gap-3">
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm font-medium text-white/80 transition-all hover:bg-white/10"
+                className="flex-1 rounded-xl border border-glass bg-glass-subtle px-4 py-3 text-sm font-medium text-theme-muted transition-all hover:bg-glass"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={!form.name.trim()}
-                className="flex-1 rounded-xl border border-white/30 bg-white/20 px-4 py-3 text-sm font-semibold text-white shadow-[0_0_24px_rgba(255,255,255,0.1)] transition-all hover:scale-[1.02] hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex-1 rounded-xl border border-glass-strong bg-glass-active px-4 py-3 text-sm font-semibold text-theme shadow-glass transition-all hover:scale-[1.02] hover:bg-glass disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {submitLabel}
               </button>

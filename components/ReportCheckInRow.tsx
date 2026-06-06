@@ -28,17 +28,18 @@ export function ReportCheckInRow({
 
   return (
     <SwipeReveal
+      className="rounded-none"
       actions={[
         {
           id: "delete",
           label: "Remove",
           icon: <Trash2 className="h-4 w-4" />,
           onClick: handleDelete,
-          className: "bg-rose-500/30 text-rose-100",
+          className: "action-delete",
         },
       ]}
     >
-      <div className="flex items-center gap-4 bg-white/5 p-4 transition-colors hover:bg-white/5">
+      <div className="flex items-center gap-4 p-4 transition-colors">
         <div
           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border"
           style={{
@@ -49,14 +50,14 @@ export function ReportCheckInRow({
           <Icon className="h-5 w-5" style={{ color: location.color }} />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="font-medium text-white">{location.name}</p>
+          <p className="font-medium text-theme">{location.name}</p>
           {location.description && (
-            <p className="truncate text-sm text-white/45">{location.description}</p>
+            <p className="truncate text-sm text-theme-subtle">{location.description}</p>
           )}
         </div>
         <time
           dateTime={checkIn.timestamp}
-          className="shrink-0 text-sm font-medium tabular-nums text-white/70"
+          className="shrink-0 text-sm font-medium tabular-nums text-theme-muted"
         >
           {timeLabel}
         </time>

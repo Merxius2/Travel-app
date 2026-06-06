@@ -3,6 +3,7 @@ import type { CheckIn, Location } from "./types";
 export interface DayGroup {
   dateKey: string;
   label: string;
+  dateLabel: string;
   entries: {
     checkIn: CheckIn;
     location: Location;
@@ -16,10 +17,36 @@ export interface LocationStat {
 }
 
 function formatDateKey(iso: string): string {
-  return iso.slice(0, 10);
+  const date = new Date(iso);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
-function formatDayLabel(dateKey: string): string {
+function parseDateKey(dateKey: string): Date {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function formatDatePart(date: Date): string {
+  return date.toLocaleDateString(undefined, {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  });
+}
+
+function formatFullDatePart(date: Date): string {
+  return date.toLocaleDateString(undefined, {
+    weekday: "long",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function formatDayLabel(dateKey: string): { label: string; dateLabel: string } {
   const today = new Date();
   const todayKey = formatDateKey(today.toISOString());
 
@@ -27,22 +54,21 @@ function formatDayLabel(dateKey: string): string {
   yesterday.setDate(yesterday.getDate() - 1);
   const yesterdayKey = formatDateKey(yesterday.toISOString());
 
+  const date = parseDateKey(dateKey);
+  const dateLabel = formatDatePart(date);
+
   if (dateKey === todayKey) {
-    return "Today";
+    return { label: "Today", dateLabel };
   }
 
   if (dateKey === yesterdayKey) {
-    return "Yesterday";
+    return { label: "Yesterday", dateLabel };
   }
 
-  const [year, month, day] = dateKey.split("-").map(Number);
-  const date = new Date(year, month - 1, day);
-  return date.toLocaleDateString(undefined, {
-    weekday: "long",
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+  return {
+    label: formatFullDatePart(date),
+    dateLabel: formatFullDatePart(date),
+  };
 }
 
 function formatTimeLabel(iso: string): string {
@@ -81,9 +107,11 @@ export function groupCheckInsByDay(
     if (existing) {
       existing.entries.push(entry);
     } else {
+      const { label, dateLabel } = formatDayLabel(dateKey);
       groups.set(dateKey, {
         dateKey,
-        label: formatDayLabel(dateKey),
+        label,
+        dateLabel,
         entries: [entry],
       });
     }

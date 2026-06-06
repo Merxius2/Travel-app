@@ -28,7 +28,6 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
-
       const rect = event.currentTarget.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
@@ -67,14 +66,14 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
           label: "Edit",
           icon: <Pencil className="h-4 w-4" />,
           onClick: () => onEdit(location),
-          className: "bg-blue-500/30 text-blue-100",
+          className: "action-edit",
         },
         {
           id: "delete",
           label: "Remove",
           icon: <Trash2 className="h-4 w-4" />,
           onClick: handleDelete,
-          className: "bg-rose-500/30 text-rose-100",
+          className: "action-delete",
         },
       ]}
     >
@@ -121,9 +120,9 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
               {location.name}
             </h3>
             {location.description ? (
-              <p className="mt-1 line-clamp-2 text-sm text-white/60">{location.description}</p>
+              <p className="mt-1 line-clamp-2 text-sm text-theme-muted">{location.description}</p>
             ) : (
-              <p className="mt-1 text-sm text-white/40">Tap to check in · swipe for options</p>
+              <p className="mt-1 text-sm text-theme-subtle">Tap to check in · swipe for options</p>
             )}
           </div>
         </div>
