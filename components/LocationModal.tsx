@@ -97,7 +97,7 @@ export function LocationModal({
         className="absolute inset-0 bg-overlay backdrop-blur-sm"
       />
 
-      <div className="glass-modal relative z-10 flex w-full max-w-lg animate-modal-in flex-col overflow-hidden rounded-t-3xl sm:max-h-[85vh] sm:rounded-3xl">
+      <div className="glass-modal relative z-10 flex w-full max-w-lg animate-modal-in flex-col overflow-hidden rounded-t-[var(--radius-modal)] sm:max-h-[85vh] sm:rounded-[var(--radius-modal)]">
         <div className="shrink-0 border-b border-glass px-5 pb-4 pt-5 sm:px-8 sm:pt-6">
           <div className="flex items-start justify-between gap-3">
             <div>

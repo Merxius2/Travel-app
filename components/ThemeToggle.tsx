@@ -1,14 +1,14 @@
 "use client";
 
 import { Monitor, Moon, Sun } from "lucide-react";
-import type { ThemePreference } from "@/lib/theme";
+import type { ColorPreference } from "@/lib/theme";
 
 interface ThemeToggleProps {
-  preference: ThemePreference;
-  onChange: (preference: ThemePreference) => void;
+  preference: ColorPreference;
+  onChange: (preference: ColorPreference) => void;
 }
 
-const OPTIONS: { value: ThemePreference; label: string; icon: typeof Sun }[] = [
+const OPTIONS: { value: ColorPreference; label: string; icon: typeof Sun }[] = [
   { value: "system", label: "System", icon: Monitor },
   { value: "light", label: "Light", icon: Sun },
   { value: "dark", label: "Dark", icon: Moon },
@@ -25,7 +25,7 @@ export function ThemeToggle({ preference, onChange }: ThemeToggleProps) {
             key={value}
             type="button"
             onClick={() => onChange(value)}
-            className={`flex flex-col items-center gap-1.5 rounded-xl border px-2 py-3 text-xs font-medium transition-all ${
+            className={`flex flex-col items-center gap-1.5 rounded-[var(--radius-control)] border px-2 py-3 text-xs font-medium transition-all ${
               isActive
                 ? "border-glass-strong bg-glass-active text-theme shadow-glass"
                 : "border-glass bg-glass-subtle text-theme-muted hover:border-glass-strong hover:bg-glass"

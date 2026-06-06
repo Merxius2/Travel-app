@@ -2,50 +2,81 @@
 
 import { useCallback, useEffect, useState } from "react";
 import {
-  applyTheme,
-  getStoredThemePreference,
-  resolveTheme,
-  THEME_STORAGE_KEY,
-  type ResolvedTheme,
-  type ThemePreference,
+  applyThemeSettings,
+  getStoredThemeSettings,
+  resolveColorMode,
+  saveThemeSettings,
+  type ColorPreference,
+  type ResolvedColorMode,
+  type ThemeFamily,
+  type ThemeSettings,
 } from "@/lib/theme";
 
 export function useTheme() {
-  const [preference, setPreferenceState] = useState<ThemePreference>("system");
-  const [resolved, setResolved] = useState<ResolvedTheme>("dark");
+  const [settings, setSettings] = useState<ThemeSettings>({
+    family: "liquid-glass",
+    colorPreference: "system",
+  });
+  const [resolvedMode, setResolvedMode] = useState<ResolvedColorMode>("dark");
 
   useEffect(() => {
-    const stored = getStoredThemePreference();
-    setPreferenceState(stored);
-    setResolved(applyTheme(stored));
+    const stored = getStoredThemeSettings();
+    setSettings(stored);
+    setResolvedMode(applyThemeSettings(stored));
   }, []);
 
   useEffect(() => {
-    if (preference !== "system") {
+    if (settings.colorPreference !== "system") {
       return;
     }
 
     const media = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = () => {
-      setResolved(applyTheme("system"));
+      setResolvedMode(applyThemeSettings(settings));
     };
 
     media.addEventListener("change", handleChange);
     return () => media.removeEventListener("change", handleChange);
-  }, [preference]);
+  }, [settings]);
 
-  const setPreference = useCallback((next: ThemePreference) => {
-    localStorage.setItem(THEME_STORAGE_KEY, next);
-    setPreferenceState(next);
-    setResolved(applyTheme(next));
+  const updateSettings = useCallback((next: ThemeSettings) => {
+    saveThemeSettings(next);
+    setSettings(next);
+    setResolvedMode(applyThemeSettings(next));
+  }, []);
+
+  const setFamily = useCallback((family: ThemeFamily) => {
+    setSettings((prev) => {
+      const next = { ...prev, family };
+      saveThemeSettings(next);
+      setResolvedMode(applyThemeSettings(next));
+      return next;
+    });
+  }, []);
+
+  const setColorPreference = useCallback((colorPreference: ColorPreference) => {
+    setSettings((prev) => {
+      const next = { ...prev, colorPreference };
+      saveThemeSettings(next);
+      setResolvedMode(applyThemeSettings(next));
+      return next;
+    });
   }, []);
 
   return {
-    preference,
-    resolved,
-    setPreference,
-    isDark: resolved === "dark",
-    isLight: resolved === "light",
-    isSystem: preference === "system",
+    family: settings.family,
+    colorPreference: settings.colorPreference,
+    resolvedMode,
+    setFamily,
+    setColorPreference,
+    /** @deprecated Use colorPreference */
+    preference: settings.colorPreference,
+    /** @deprecated Use setColorPreference */
+    setPreference: setColorPreference,
+    /** @deprecated Use resolvedMode */
+    resolved: resolvedMode,
+    isDark: resolvedMode === "dark",
+    isLight: resolvedMode === "light",
+    isSystem: settings.colorPreference === "system",
   };
 }

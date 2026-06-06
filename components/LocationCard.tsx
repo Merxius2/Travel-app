@@ -60,7 +60,7 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
 
   return (
     <SwipeReveal
-      className="rounded-2xl"
+      className="rounded-[var(--radius-card)]"
       opaqueForeground={false}
       actions={[
         {
@@ -82,7 +82,7 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
       <button
         type="button"
         onClick={handleClick}
-        className={`group relative block min-h-[148px] w-full rounded-2xl p-6 text-left backdrop-blur-2xl transition-all duration-300 ${
+        className={`group relative block min-h-[148px] w-full rounded-[var(--radius-card)] p-6 text-left backdrop-blur-2xl transition-all duration-300 ${
           isPressed ? "scale-[0.96]" : "hover:scale-[1.02] active:scale-[0.96]"
         }`}
         style={{

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Cloud, Download, Palette, Trash2, X } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import { GlassCard } from "./GlassCard";
+import { ThemeFamilyPicker } from "./ThemeFamilyPicker";
 import { ThemeToggle } from "./ThemeToggle";
 
 interface SettingsPanelProps {
@@ -23,7 +24,7 @@ export function SettingsPanel({
   locationCount,
   checkInCount,
 }: SettingsPanelProps) {
-  const { preference, setPreference } = useTheme();
+  const { family, colorPreference, setFamily, setColorPreference } = useTheme();
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -67,7 +68,7 @@ export function SettingsPanel({
         className="absolute inset-0 bg-overlay backdrop-blur-sm"
       />
 
-      <div className="glass-modal relative z-10 max-h-[92dvh] w-full max-w-md animate-modal-in overflow-y-auto rounded-3xl p-6">
+      <div className="glass-modal relative z-10 max-h-[92dvh] w-full max-w-md animate-modal-in overflow-y-auto p-6">
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h2 className="text-xl font-semibold text-theme">Settings</h2>
@@ -86,16 +87,25 @@ export function SettingsPanel({
 
         <div className="space-y-3">
           <GlassCard className="p-4">
-            <div className="mb-3 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-glass bg-glass-active">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-control)] border border-glass bg-glass-active">
                 <Palette className="h-5 w-5 text-theme-muted" />
               </div>
               <div>
                 <p className="font-medium text-theme">Appearance</p>
-                <p className="text-sm text-theme-muted">Theme preference</p>
+                <p className="text-sm text-theme-muted">Theme & color mode</p>
               </div>
             </div>
-            <ThemeToggle preference={preference} onChange={setPreference} />
+
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-theme-subtle">
+              Theme
+            </p>
+            <ThemeFamilyPicker family={family} onChange={setFamily} />
+
+            <p className="mb-2 mt-4 text-xs font-semibold uppercase tracking-wider text-theme-subtle">
+              Color mode
+            </p>
+            <ThemeToggle preference={colorPreference} onChange={setColorPreference} />
           </GlassCard>
 
           <GlassCard className="p-4">

@@ -29,7 +29,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} liquid-bg antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} theme-bg antialiased`}
       >
         <div className="relative z-10 mx-auto min-h-screen max-w-6xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
           {children}
