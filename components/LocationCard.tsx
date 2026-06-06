@@ -36,19 +36,23 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
       const y = event.clientY - rect.top;
       const id = rippleId.current++;
 
-      setRipples((prev) => [...prev, { id, x, y }]);
+      if (!isClay) {
+        setRipples((prev) => [...prev, { id, x, y }]);
+      }
       setIsPressed(true);
       setIsGlowing(true);
       onCheckIn(location.id);
 
       window.setTimeout(() => setIsPressed(false), 180);
       window.setTimeout(() => setIsGlowing(false), 600);
-      window.setTimeout(
-        () => setRipples((prev) => prev.filter((ripple) => ripple.id !== id)),
-        700
-      );
+      if (!isClay) {
+        window.setTimeout(
+          () => setRipples((prev) => prev.filter((ripple) => ripple.id !== id)),
+          700
+        );
+      }
     },
-    [location.id, onCheckIn]
+    [isClay, location.id, onCheckIn]
   );
 
   const handleDelete = () => {
@@ -61,13 +65,16 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
     }
   };
 
-  const clayShadow = isGlowing
-    ? `0 8px 0 ${location.color}44, 0 16px 32px ${location.color}33, inset 0 3px 0 rgba(255,255,255,0.5), inset 0 -5px 10px ${location.color}22`
-    : `0 6px 0 ${location.color}33, 0 12px 28px ${location.color}22, inset 0 3px 0 rgba(255,255,255,0.55), inset 0 -5px 10px ${location.color}18`;
-
-  const glassShadow = isGlowing
-    ? `0 0 40px ${location.color}55, inset 0 1px 1px rgba(255,255,255,0.25)`
-    : `inset 0 1px 1px rgba(255,255,255,0.2), 0 8px 32px rgba(0,0,0,0.12)`;
+  const cardStyle = isClay
+    ? ({ "--location-color": location.color } as React.CSSProperties)
+    : {
+        borderColor: `${location.color}55`,
+        backgroundColor: `${location.color}18`,
+        boxShadow: isGlowing
+          ? `0 0 40px ${location.color}55, inset 0 1px 1px rgba(255,255,255,0.25)`
+          : `inset 0 1px 1px rgba(255,255,255,0.2), 0 8px 32px rgba(0,0,0,0.12)`,
+        border: `1px solid ${location.color}55`,
+      };
 
   return (
     <SwipeReveal
@@ -93,39 +100,36 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
       <button
         type="button"
         onClick={handleClick}
+        style={cardStyle}
         className={`location-card-btn group relative block min-h-[148px] w-full rounded-[var(--radius-card)] p-6 text-left transition-all duration-300 ${
+          isClay ? "location-card-clay" : ""
+        } ${isClay && isGlowing ? "location-card-clay-active" : ""} ${
           isPressed ? "scale-[0.96]" : "hover:scale-[1.02] active:scale-[0.96]"
         }`}
-        style={{
-          backgroundColor: isClay
-            ? `color-mix(in srgb, ${location.color} var(--location-tint-mix), var(--location-tint-base))`
-            : `${location.color}18`,
-          boxShadow: isClay ? clayShadow : glassShadow,
-          border: isClay ? "none" : `1px solid ${location.color}55`,
-        }}
       >
-        {ripples.map((ripple) => (
-          <span
-            key={ripple.id}
-            className="pointer-events-none absolute animate-ripple rounded-full"
-            style={{
-              left: ripple.x,
-              top: ripple.y,
-              backgroundColor: `${location.color}40`,
-            }}
-          />
-        ))}
+        {!isClay &&
+          ripples.map((ripple) => (
+            <span
+              key={ripple.id}
+              className="pointer-events-none absolute animate-ripple rounded-full"
+              style={{
+                left: ripple.x,
+                top: ripple.y,
+                backgroundColor: `${location.color}40`,
+              }}
+            />
+          ))}
 
         <div className="relative z-10 flex h-full flex-col justify-between gap-4">
           <div
-            className="flex h-12 w-12 items-center justify-center rounded-xl border transition-all duration-300 group-hover:scale-110"
+            className={`flex h-12 w-12 items-center justify-center transition-all duration-300 group-hover:scale-110 ${
+              isClay
+                ? "location-card-icon rounded-2xl"
+                : "rounded-xl border"
+            }`}
             style={
               isClay
-                ? {
-                    backgroundColor: location.color,
-                    border: "none",
-                    boxShadow: `0 4px 0 ${location.color}99, inset 0 2px 0 rgba(255,255,255,0.35)`,
-                  }
+                ? undefined
                 : {
                     borderColor: `${location.color}66`,
                     backgroundColor: `${location.color}30`,
@@ -141,8 +145,8 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
 
           <div>
             <h3
-              className="font-bold"
-              style={{ color: isClay ? location.color : location.color }}
+              className={isClay ? "location-card-title font-extrabold" : "font-semibold"}
+              style={isClay ? undefined : { color: location.color }}
             >
               {location.name}
             </h3>

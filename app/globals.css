@@ -473,6 +473,39 @@ html.theme-bg::after {
   border: none !important;
 }
 
+[data-theme-family="vibrant-clay"] .location-card-clay {
+  background-color: var(--glass-surface) !important;
+  box-shadow: var(--card-shadow) !important;
+}
+
+[data-theme-family="vibrant-clay"] .location-card-clay:hover {
+  box-shadow:
+    var(--card-shadow),
+    0 16px 40px color-mix(in srgb, var(--location-color) 22%, transparent) !important;
+}
+
+[data-theme-family="vibrant-clay"] .location-card-clay.location-card-clay-active {
+  box-shadow:
+    0 2px 0 color-mix(in srgb, var(--location-color) 50%, black),
+    0 6px 0 color-mix(in srgb, var(--location-color) 35%, black),
+    0 14px 28px color-mix(in srgb, var(--location-color) 28%, transparent),
+    inset 0 2px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -4px 8px color-mix(in srgb, var(--location-color) 12%, transparent) !important;
+}
+
+[data-theme-family="vibrant-clay"] .location-card-icon {
+  background-color: var(--location-color);
+  border: none;
+  box-shadow:
+    0 4px 0 color-mix(in srgb, var(--location-color) 72%, black),
+    inset 0 2px 0 rgba(255, 255, 255, 0.38);
+}
+
+[data-theme-family="vibrant-clay"] .location-card-title {
+  color: var(--location-color);
+  letter-spacing: -0.02em;
+}
+
 [data-theme-family="vibrant-clay"] .btn-clay-primary {
   background-color: var(--cta-bg) !important;
   color: var(--cta-text) !important;
