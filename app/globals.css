@@ -14,6 +14,7 @@
   --glass-surface-subtle: rgba(255, 255, 255, 0.05);
   --glass-surface-active: rgba(255, 255, 255, 0.2);
   --glass-row: rgba(255, 255, 255, 0.05);
+  --swipe-panel-bg: #1c1a33;
   --glass-border: rgba(255, 255, 255, 0.2);
   --glass-border-strong: rgba(255, 255, 255, 0.35);
   --glass-input-bg: rgba(0, 0, 0, 0.2);
@@ -46,6 +47,7 @@
   --glass-surface-subtle: rgba(255, 255, 255, 0.45);
   --glass-surface-active: rgba(255, 255, 255, 0.82);
   --glass-row: rgba(255, 255, 255, 0.55);
+  --swipe-panel-bg: #eef0ff;
   --glass-border: rgba(255, 255, 255, 0.85);
   --glass-border-strong: rgba(99, 102, 241, 0.35);
   --glass-input-bg: rgba(255, 255, 255, 0.75);
@@ -137,6 +139,7 @@
 .bg-glass-subtle { background-color: var(--glass-surface-subtle); }
 .bg-glass-active { background-color: var(--glass-surface-active); }
 .bg-glass-row { background-color: var(--glass-row); }
+.bg-swipe-panel { background-color: var(--swipe-panel-bg); }
 .bg-glass-input { background-color: var(--glass-input-bg); }
 .bg-glass-modal-footer { background-color: var(--glass-modal-footer); }
 .bg-overlay { background-color: var(--overlay-bg); }

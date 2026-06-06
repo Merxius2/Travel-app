@@ -32,7 +32,7 @@ export function SwipeReveal({ children, actions, className = "", onOpenChange }:
 
   const maxOffset = actions.length * ACTION_WIDTH;
   const openThreshold = maxOffset * 0.35;
-  const isOpen = offset !== 0;
+  const showActions = Math.abs(offset) > 4;
 
   const snap = useCallback(
     (value: number) => {
@@ -114,21 +114,24 @@ export function SwipeReveal({ children, actions, className = "", onOpenChange }:
   return (
     <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
       <div
-        className={`absolute inset-y-0 right-0 flex ${isOpen ? "z-20" : "z-0"}`}
+        className={`absolute inset-y-0 right-0 z-0 flex transition-opacity duration-200 ${
+          showActions ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
         style={{ width: maxOffset }}
-        aria-hidden={!isOpen}
+        aria-hidden={!showActions}
       >
         {actions.map((action) => (
           <button
             key={action.id}
             type="button"
+            tabIndex={showActions ? 0 : -1}
             onPointerDown={(event) => event.stopPropagation()}
             onClick={(event) => {
               event.stopPropagation();
               action.onClick();
               close();
             }}
-            className={`flex w-[72px] flex-col items-center justify-center gap-1 text-xs font-medium transition-opacity ${
+            className={`flex h-full w-[72px] flex-col items-center justify-center gap-1 text-xs font-medium ${
               action.className ?? "bg-glass text-theme"
             }`}
           >
@@ -139,7 +142,7 @@ export function SwipeReveal({ children, actions, className = "", onOpenChange }:
       </div>
 
       <div
-        className={`relative z-10 touch-pan-y select-none bg-glass-row ${
+        className={`relative z-10 w-full touch-pan-y select-none bg-swipe-panel ${
           isAnimating ? "transition-transform duration-300 ease-out" : ""
         }`}
         style={{ transform: `translateX(${offset}px)` }}
