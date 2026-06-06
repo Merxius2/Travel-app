@@ -279,6 +279,26 @@
   color: var(--theme-text-subtle);
 }
 
+html {
+  margin: 0;
+  padding: 0;
+  min-height: 100dvh;
+  min-height: 100vh;
+  background-color: var(--bg-gradient-1);
+}
+
+html,
+body {
+  min-height: 100dvh;
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
 .theme-bg {
   background: linear-gradient(
     -45deg,
@@ -289,7 +309,9 @@
     var(--bg-gradient-5),
     var(--bg-gradient-6)
   );
+  background-color: var(--bg-gradient-1);
   background-size: 400% 400%;
+  background-attachment: fixed;
   animation: gradient-shift 18s ease infinite;
 }
 
@@ -325,7 +347,6 @@
 }
 
 body {
-  min-height: 100vh;
   font-family: var(--font-sans);
   color: var(--theme-text);
   -webkit-font-smoothing: antialiased;
