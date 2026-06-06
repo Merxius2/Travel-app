@@ -90,6 +90,21 @@ export function resolveColorMode(preference: ColorPreference): ResolvedColorMode
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
+function syncThemeColorMeta(): void {
+  const root = document.documentElement;
+  const color =
+    getComputedStyle(root).getPropertyValue("--bg-gradient-1").trim() || "#0f0c29";
+
+  let meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) {
+    meta = document.createElement("meta");
+    meta.setAttribute("name", "theme-color");
+    document.head.appendChild(meta);
+  }
+
+  meta.setAttribute("content", color);
+}
+
 export function applyThemeSettings(settings: ThemeSettings): ResolvedColorMode {
   const mode = resolveColorMode(settings.colorPreference);
 
@@ -98,6 +113,7 @@ export function applyThemeSettings(settings: ThemeSettings): ResolvedColorMode {
     document.documentElement.setAttribute("data-theme-mode", mode);
     document.documentElement.setAttribute("data-color-preference", settings.colorPreference);
     document.documentElement.style.colorScheme = mode;
+    syncThemeColorMeta();
   }
 
   return mode;
@@ -126,6 +142,14 @@ export const themeInitScript = `
     document.documentElement.setAttribute("data-theme-mode", mode);
     document.documentElement.setAttribute("data-color-preference", preference);
     document.documentElement.style.colorScheme = mode;
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "theme-color");
+      document.head.appendChild(meta);
+    }
+    var topColor = getComputedStyle(document.documentElement).getPropertyValue("--bg-gradient-1").trim();
+    if (topColor) meta.setAttribute("content", topColor);
   } catch (e) {}
 })();
 `;

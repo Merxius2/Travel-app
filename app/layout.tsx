@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { AppProviders } from "@/components/AppProviders";
 import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
 
@@ -32,14 +33,18 @@ export default function RootLayout({
   return (
     <html lang="en" className="theme-bg h-full" suppressHydrationWarning>
       <head>
+        <meta name="theme-color" content="#0f0c29" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-dvh antialiased`}
       >
-        <div className="relative z-10 mx-auto min-h-screen max-w-6xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-          {children}
-        </div>
+        <AppProviders>
+          <div className="relative z-10 mx-auto min-h-screen max-w-6xl px-4 pb-8 pt-[max(2rem,env(safe-area-inset-top,0px))] sm:px-6 sm:pb-12 sm:pt-[max(3rem,env(safe-area-inset-top,0px))] lg:px-8">
+            {children}
+          </div>
+        </AppProviders>
       </body>
     </html>
   );

@@ -20,6 +20,10 @@ const defaultForm: LocationFormData = {
   icon: "home",
 };
 
+function colorsMatch(a: string, b: string): boolean {
+  return a.trim().toLowerCase() === b.trim().toLowerCase();
+}
+
 function locationToForm(location: Location): LocationFormData {
   return {
     name: location.name,
@@ -153,25 +157,29 @@ export function LocationModal({
             <div>
               <span className="mb-3 block text-sm font-medium text-theme">Custom Color</span>
               <div className="grid grid-cols-4 gap-3 sm:grid-cols-8">
-                {COLOR_PRESETS.map((preset) => (
-                  <button
-                    key={preset.id}
-                    type="button"
-                    aria-label={preset.label}
-                    onClick={() => setForm((prev) => ({ ...prev, color: preset.value }))}
-                    className={`aspect-square rounded-xl border-2 transition-all duration-300 hover:scale-110 ${
-                      form.color === preset.value
-                        ? "scale-110 border-glass-strong shadow-[0_0_24px_var(--glow)]"
-                        : "border-glass hover:border-glass-strong"
-                    }`}
-                    style={
-                      {
+                {COLOR_PRESETS.map((preset) => {
+                  const isSelected = colorsMatch(form.color, preset.value);
+
+                  return (
+                    <button
+                      key={preset.id}
+                      type="button"
+                      aria-label={preset.label}
+                      aria-pressed={isSelected}
+                      onClick={() => setForm((prev) => ({ ...prev, color: preset.value }))}
+                      className={`aspect-square rounded-xl border-2 transition-all duration-300 hover:scale-110 ${
+                        isSelected ? "scale-110" : "border-glass hover:border-glass-strong"
+                      }`}
+                      style={{
                         backgroundColor: preset.value,
-                        "--glow": `${preset.value}88`,
-                      } as React.CSSProperties
-                    }
-                  />
-                ))}
+                        borderColor: isSelected ? preset.value : undefined,
+                        boxShadow: isSelected
+                          ? `0 0 0 2px var(--glass-surface), 0 0 0 4px ${preset.value}, 0 0 20px ${preset.value}aa`
+                          : undefined,
+                      }}
+                    />
+                  );
+                })}
               </div>
             </div>
 
