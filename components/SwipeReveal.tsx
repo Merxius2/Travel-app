@@ -14,13 +14,21 @@ interface SwipeRevealProps {
   children: ReactNode;
   actions: SwipeAction[];
   className?: string;
+  /** When false, children supply their own background (e.g. location cards). */
+  opaqueForeground?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
 const ACTION_WIDTH = 72;
 const DRAG_THRESHOLD = 10;
 
-export function SwipeReveal({ children, actions, className = "", onOpenChange }: SwipeRevealProps) {
+export function SwipeReveal({
+  children,
+  actions,
+  className = "",
+  opaqueForeground = true,
+  onOpenChange,
+}: SwipeRevealProps) {
   const [offset, setOffset] = useState(0);
   const [isAnimating, setIsAnimating] = useState(true);
   const startX = useRef(0);
@@ -142,9 +150,9 @@ export function SwipeReveal({ children, actions, className = "", onOpenChange }:
       </div>
 
       <div
-        className={`relative z-10 w-full touch-pan-y select-none bg-swipe-panel ${
-          isAnimating ? "transition-transform duration-300 ease-out" : ""
-        }`}
+        className={`relative z-10 w-full touch-pan-y select-none ${
+          opaqueForeground ? "bg-swipe-panel" : "bg-transparent"
+        } ${isAnimating ? "transition-transform duration-300 ease-out" : ""}`}
         style={{ transform: `translateX(${offset}px)` }}
         onClickCapture={handleClickCapture}
         onTouchStart={(event) => handleStart(event.touches[0].clientX)}

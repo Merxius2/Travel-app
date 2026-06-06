@@ -60,6 +60,8 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
 
   return (
     <SwipeReveal
+      className="rounded-2xl"
+      opaqueForeground={false}
       actions={[
         {
           id: "edit",
@@ -80,7 +82,7 @@ export function LocationCard({ location, onCheckIn, onEdit, onDelete }: Location
       <button
         type="button"
         onClick={handleClick}
-        className={`group relative min-h-[148px] w-full overflow-hidden rounded-2xl border p-6 text-left backdrop-blur-2xl transition-all duration-300 ${
+        className={`group relative block min-h-[148px] w-full border p-6 text-left backdrop-blur-2xl transition-all duration-300 ${
           isPressed ? "scale-[0.96]" : "hover:scale-[1.02] active:scale-[0.96]"
         }`}
         style={{
