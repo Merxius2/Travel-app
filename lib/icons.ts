@@ -13,6 +13,7 @@ import {
   UtensilsCrossed,
   type LucideIcon,
 } from "lucide-react";
+import type { ThemeFamily } from "./theme";
 import type { LocationIconId } from "./types";
 
 export interface IconOption {
@@ -36,7 +37,7 @@ export const ICON_OPTIONS: IconOption[] = [
   { id: "heart", label: "Favorite", icon: Heart },
 ];
 
-export const COLOR_PRESETS = [
+export const LIQUID_GLASS_COLOR_PRESETS = [
   { id: "violet", value: "#8B5CF6", label: "Violet" },
   { id: "fuchsia", value: "#D946EF", label: "Fuchsia" },
   { id: "rose", value: "#F43F5E", label: "Rose" },
@@ -46,6 +47,24 @@ export const COLOR_PRESETS = [
   { id: "blue", value: "#3B82F6", label: "Blue" },
   { id: "indigo", value: "#6366F1", label: "Indigo" },
 ] as const;
+
+export const VIBRANT_CLAY_COLOR_PRESETS = [
+  { id: "purple", value: "#7B61FF", label: "Purple" },
+  { id: "deep-purple", value: "#3D3488", label: "Deep Purple" },
+  { id: "violet", value: "#5C4FD4", label: "Violet" },
+  { id: "pink", value: "#F48FB1", label: "Pink" },
+  { id: "blue", value: "#64B5F6", label: "Blue" },
+  { id: "lime", value: "#9ACD32", label: "Lime" },
+  { id: "rose", value: "#F43F5E", label: "Rose" },
+  { id: "indigo", value: "#4A3FA0", label: "Indigo" },
+] as const;
+
+/** @deprecated Use getColorPresets() for theme-aware presets */
+export const COLOR_PRESETS = LIQUID_GLASS_COLOR_PRESETS;
+
+export function getColorPresets(family: ThemeFamily) {
+  return family === "vibrant-clay" ? VIBRANT_CLAY_COLOR_PRESETS : LIQUID_GLASS_COLOR_PRESETS;
+}
 
 export function getIconComponent(iconId: LocationIconId): LucideIcon {
   const option = ICON_OPTIONS.find((item) => item.id === iconId);

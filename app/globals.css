@@ -369,7 +369,7 @@ html.theme-bg::after {
 }
 
 /* ─── Vibrant Clay overrides ─── */
-[data-theme-family="vibrant-clay"] html.theme-bg::before {
+html[data-theme-family="vibrant-clay"].theme-bg::before {
   animation: none;
   background: linear-gradient(
     180deg,
@@ -383,7 +383,7 @@ html.theme-bg::after {
   background-size: 100% 100%;
 }
 
-[data-theme-family="vibrant-clay"] html.theme-bg::after {
+html[data-theme-family="vibrant-clay"].theme-bg::after {
   display: none;
 }
 

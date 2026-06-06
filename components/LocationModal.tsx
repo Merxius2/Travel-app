@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { X } from "lucide-react";
-import { COLOR_PRESETS, ICON_OPTIONS } from "@/lib/icons";
+import { useTheme } from "@/hooks/useTheme";
+import { getColorPresets, ICON_OPTIONS } from "@/lib/icons";
 import type { Location, LocationFormData, LocationIconId } from "@/lib/types";
 
 interface LocationModalProps {
@@ -13,12 +14,14 @@ interface LocationModalProps {
   onSave: (data: LocationFormData) => void;
 }
 
-const defaultForm: LocationFormData = {
-  name: "",
-  description: "",
-  color: COLOR_PRESETS[0].value,
-  icon: "home",
-};
+function createDefaultForm(color: string): LocationFormData {
+  return {
+    name: "",
+    description: "",
+    color,
+    icon: "home",
+  };
+}
 
 function colorsMatch(a: string, b: string): boolean {
   return a.trim().toLowerCase() === b.trim().toLowerCase();
@@ -40,7 +43,11 @@ export function LocationModal({
   onClose,
   onSave,
 }: LocationModalProps) {
-  const [form, setForm] = useState<LocationFormData>(defaultForm);
+  const { family } = useTheme();
+  const colorPresets = useMemo(() => getColorPresets(family), [family]);
+  const [form, setForm] = useState<LocationFormData>(() =>
+    createDefaultForm(colorPresets[0].value)
+  );
 
   useEffect(() => {
     if (!isOpen) {
@@ -50,9 +57,9 @@ export function LocationModal({
     if (mode === "edit" && initialLocation) {
       setForm(locationToForm(initialLocation));
     } else {
-      setForm(defaultForm);
+      setForm(createDefaultForm(colorPresets[0].value));
     }
-  }, [isOpen, mode, initialLocation]);
+  }, [isOpen, mode, initialLocation, colorPresets]);
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -157,7 +164,7 @@ export function LocationModal({
             <div>
               <span className="mb-3 block text-sm font-medium text-theme">Custom Color</span>
               <div className="grid grid-cols-4 gap-3 sm:grid-cols-8">
-                {COLOR_PRESETS.map((preset) => {
+                {colorPresets.map((preset) => {
                   const isSelected = colorsMatch(form.color, preset.value);
 
                   return (
