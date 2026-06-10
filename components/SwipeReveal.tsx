@@ -103,8 +103,12 @@ export function SwipeReveal({
     isDragging.current = false;
 
     if (hasPassedThreshold.current) {
-      blockNextClick.current = true;
-      snap(offset);
+      const nextOffset = snap(offset);
+      // Only suppress the synthetic click after a swipe that leaves actions open.
+      // Closing the card should not eat the next intentional tap (e.g. check-in).
+      if (nextOffset !== 0) {
+        blockNextClick.current = true;
+      }
       return;
     }
 
