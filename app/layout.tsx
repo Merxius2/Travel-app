@@ -17,6 +17,20 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Location Tracker",
   description: "A modern, elegant location-tracking MVP with liquid glass design",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    title: "Location Tracker",
+    statusBarStyle: "default",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export const viewport = {
@@ -34,7 +48,8 @@ export default function RootLayout({
     <html lang="en" className="theme-bg h-full" suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#0f0c29" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body
